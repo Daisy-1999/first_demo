@@ -11,9 +11,22 @@ import './assets/fonts/iconfont.css'
 import './assets/css/global.css'
 
 import axios from 'axios'
-//配置i请求的根路径
-//axios.defalults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+//配置请求的根路径
+axios.defaults.baseURL = 'https://www.liulongbin.top:8888/api/private/v1/'
 
+
+          //通过接口获取数据菜单 通过axios请求拦截添加token,保证拥有获取数据的权限
+        //相当于一次预处理
+        //发送请求时如果请求头的Authorization没有token的话服务器会驳回你的请求
+axios.interceptors.request.use(config =>{
+  //console.log(config)
+  //在最后必须return config
+  config.headers.Authorization = window.sessionStorage.getItem('token');
+  return config
+})
+
+
+//将根路径挂载到$http中
 Vue.prototype.$http = axios
 
 Vue.config.productionTip = false

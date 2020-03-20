@@ -32,7 +32,7 @@
                 //这是loginForm登陆表单的数据绑定对象
 
                 loginForm:{
-                    username: 'adimn',
+                    username: 'admin',
                     password: '123456'
                 },
 
@@ -59,18 +59,30 @@
             },
             login(){
                 //表单预验证，拿到valid =>（true, false)
-                this.$refs.loginFormRef.validate((valid) => {
+                this.$refs.loginFormRef.validate(async valid => {
                     //console.log(valid);
-                    if(!valid){
+                    if(!valid) return;
+                    //要使用await 必须搭配async 这个是为了将拿到的promise简化 将一些不必要的数据省略
+                    //将拿到的数据把data单独拿出来,赋值为res
+                    const {data: res} = await this.$http.post('login', this.loginForm)
+                    //console.log(res);
+                    if (res.meta.status !== 200){
                         this.$message.error('登陆失败');
-                        
                     } else{
                         this.$message.success('登陆成功');
+                        //console.log(res)
+                        //每一个登录的人都有一个token通过token来判断是否注册了账号
+                        //这个操作是为了将登录成功之后的token保存到sessionStorage中
+                        window.sessionStorage.setItem('token', res.data.token);
+                        //验证成功之后进入/home
                         this.$router.push('/home');
+
+                        //路由导航守卫 如果没有登录，但是直接通过URL访问特定的页面，需要重新登录导航到登录页面
+                        //next ()是放行
+                        
                     }
-                    //this.$http.post('login', this.loginForm);
-                })
-            }
+                } 
+            )}
         }
     }
 </script>
