@@ -3,6 +3,7 @@ import App from './App.vue'  //加载app.vue的文件
 import router from './router'
 import './plugins/element.js'
 import 'element-ui/lib/theme-chalk/index.css'
+import TreeTable from 'vue-table-with-tree-grid'
 
 //导入字体图标
 import './assets/fonts/iconfont.css'
@@ -30,6 +31,9 @@ axios.interceptors.request.use(config =>{
 Vue.prototype.$http = axios
 
 Vue.config.productionTip = false
+
+//注册为全局可用的组件
+Vue.component('tree-table', TreeTable)
 
 //全局注册组件
 
