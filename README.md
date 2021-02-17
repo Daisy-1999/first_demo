@@ -1,5 +1,5 @@
 # first_demo
-
+基于vue和element-ui实现的一个后台管理系统
 ## Project setup
 ```
 npm install
